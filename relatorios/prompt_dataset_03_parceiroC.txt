@@ -1,13 +1,12 @@
 
 Você atua como Analista de Growth Sênior no Méliuz.
-Acabamos de rodar um Teste A/B com Todos os Parceiros. 
+Acabamos de rodar um Teste A/B com o parceiro dataset_03_parceiroC. 
 Nossa equipe processou os dados e o resumo matemático é este:
 
-                    compradores   comissão  cashback  vendas totais  lucro_meliuz       roi
-Grupos de usuários                                                                         
-Grupo 1                   22172  1210149.0  484099.0     11437451.0      726050.0  1.499797
-Grupo 2                   20788  1161080.0  660404.0     10971350.0      500676.0  0.758136
-Grupo 3                   16439  1057177.0  740297.0      9415819.0      316880.0  0.428044
+                    compradores  comissão  cashback  vendas totais  lucro_meliuz       roi
+Grupos de usuários                                                                        
+Grupo 1                    4549  121693.0   86924.0      1738460.0       34769.0  0.399993
+Grupo 2                    4522  117967.0  117967.0      1685235.0           0.0  0.000000
 
 A variante matematicamente vencedora, com base no maior lucro para o Méliuz (Comissão - Cashback), foi a: Grupo 1.
 

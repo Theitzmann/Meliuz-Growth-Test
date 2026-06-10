@@ -1,13 +1,12 @@
-import os
-import glob
 import pandas as pd
+import os
+import gspread
+from datetime import datetime
 
-def carregar_e_limpar_dados(pasta_datasets):
-    arquivos = glob.glob(os.path.join(pasta_datasets, "*.csv"))
-    df = pd.concat([pd.read_csv(arq) for arq in arquivos], ignore_index=True)
-    
+# Lê o CSV e converte valores financeiros para decimais.
+def carregar_e_limpar_dados(caminho_arquivo):
+    df = pd.read_csv(caminho_arquivo)
     colunas_financeiras = ['comissão', 'cashback', 'vendas totais']
-    
     for coluna in colunas_financeiras:
         df[coluna] = (
             df[coluna]
@@ -18,6 +17,7 @@ def carregar_e_limpar_dados(pasta_datasets):
         )
     return df
 
+# Agrupa os dados e calcula a variante com maior lucro.
 def calcular_vencedor_ab(df):
     resumo = df.groupby('Grupos de usuários')[['compradores', 'comissão', 'cashback', 'vendas totais']].sum()
     resumo['lucro_meliuz'] = resumo['comissão'] - resumo['cashback']
@@ -25,12 +25,12 @@ def calcular_vencedor_ab(df):
     variante_vencedora = resumo['lucro_meliuz'].idxmax()
     return resumo, variante_vencedora
 
+# Cria um texto de instrução (prompt) para a IA gerar o relatório.
 def gerar_prompt_relatorio(resumo_df, vencedor, nome_parceiro):
-    dados_texto = resumo_df.to_string()
-    
+    dados_texto = resumo_df.to_string() 
     prompt = f"""
 Você atua como Analista de Growth Sênior no Méliuz.
-Acabamos de rodar um Teste A/B com {nome_parceiro}. 
+Acabamos de rodar um Teste A/B com o parceiro {nome_parceiro}. 
 Nossa equipe processou os dados e o resumo matemático é este:
 
 {dados_texto}
@@ -46,30 +46,78 @@ O relatório deve ser focado em negócios, ser direto ao ponto e conter as segui
 
 Por favor, gere APENAS o relatório. Sem saudações ou explicações adicionais.
     """
-    
     pasta_relatorios = os.path.join(os.path.dirname(__file__), "..", "relatorios")
     os.makedirs(pasta_relatorios, exist_ok=True)
     caminho_arquivo = os.path.join(pasta_relatorios, f"prompt_{nome_parceiro.replace(' ', '_')}.txt")
-    
     with open(caminho_arquivo, "w", encoding="utf-8") as arquivo:
         arquivo.write(prompt)
-        
     return caminho_arquivo
 
-if __name__ == "__main__":
-    pasta_teste = os.path.join(os.path.dirname(__file__), "..", "datasets")
-    nome_parceiro = "Todos os Parceiros"
-    
+# Conecta na planilha do Google
+def registrar_no_google_sheets(nome_parceiro, vencedor, lucro, roi):
     try:
-        dados_limpos = carregar_e_limpar_dados(pasta_teste)
-        tabela_resumo, vencedor = calcular_vencedor_ab(dados_limpos)
+        caminho_credenciais = os.path.join(os.path.dirname(__file__), "..", "credentials.json")
+        gc = gspread.service_account(filename=caminho_credenciais)
         
-        caminho_prompt = gerar_prompt_relatorio(tabela_resumo, vencedor, nome_parceiro)
+        planilha = gc.open_by_url('https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit').sheet1
         
-        print(f"📄 Abra o arquivo '{caminho_prompt}' e cole o texto na sua IA para obter o relatório.")
-        print("\n📊 Resumo de Negócios por Variante:")
-        print(tabela_resumo[['lucro_meliuz', 'roi', 'vendas totais']])
-        print(f"\n🏆 Decisão acionável: escalar a variante '{vencedor}' para 100% do tráfego.")
+        data_atual = datetime.now().strftime("%d/%m/%Y %H:%M")
+        decisao = f"Escalar {vencedor} para 100% do tráfego"
+        lucro_formatado = f"R$ {lucro:,.2f}"
+        roi_formatado = f"{roi:.2f}"
+        
+        linha = [data_atual, nome_parceiro, vencedor, lucro_formatado, roi_formatado, decisao]
+        
+        planilha.append_row(linha)
+        print("☁️ Resultado registrado no Google Sheets com sucesso!")
         
     except Exception as e:
-        print(f"❌ Ocorreu um erro: {e}")
+        print(f"❌ Erro ao salvar no Google Sheets: {e}")
+        print("Dica: Verifique se o 'credentials.json' está na pasta raiz e se você compartilhou a planilha com o e-mail correto.")
+
+# Busca parceiros que já foram salvos na planilha
+def obter_parceiros_processados():
+    try:
+        caminho_credenciais = os.path.join(os.path.dirname(__file__), "..", "credentials.json")
+        gc = gspread.service_account(filename=caminho_credenciais)
+        planilha = gc.open_by_url('https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit').sheet1
+        return set(planilha.col_values(2))
+    except Exception:
+        return set()
+
+# Processa automaticamente todos os datasets encontrados na pasta.
+if __name__ == "__main__":
+    
+    pasta_datasets = os.path.join(os.path.dirname(__file__), "..", "datasets")
+    arquivos = [f for f in os.listdir(pasta_datasets) if f.endswith('.csv')]
+    
+    if not arquivos:
+        print("Nenhum arquivo .csv encontrado na pasta datasets.")
+    
+    parceiros_processados = obter_parceiros_processados()
+    
+    for arquivo_atual in sorted(arquivos):
+        caminho_teste = os.path.join(pasta_datasets, arquivo_atual)
+        nome_parceiro = arquivo_atual.replace(".csv", "")
+        
+        if nome_parceiro in parceiros_processados:
+            continue
+            
+        print(f"--------------------------------------------------")
+        print(f"Iniciando pipeline de análise para: {nome_parceiro}")
+        
+        try:
+            dados_limpos = carregar_e_limpar_dados(caminho_teste)
+            tabela_resumo, vencedor = calcular_vencedor_ab(dados_limpos)
+            
+            caminho_prompt = gerar_prompt_relatorio(tabela_resumo, vencedor, nome_parceiro)
+            print("✅ Relatório de IA gerado.")
+            
+            lucro_vencedor = tabela_resumo.loc[vencedor, 'lucro_meliuz']
+            roi_vencedor = tabela_resumo.loc[vencedor, 'roi']
+            registrar_no_google_sheets(nome_parceiro, vencedor, lucro_vencedor, roi_vencedor)
+            
+            print(f"🎉 Pipeline executado com sucesso para {nome_parceiro}!\n")
+            
+        except Exception as e:
+            print(f"❌ Ocorreu um erro ao processar {nome_parceiro}: {e}\n")
