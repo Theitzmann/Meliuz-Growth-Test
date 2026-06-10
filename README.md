@@ -1,10 +1,8 @@
 # 🚀 Méliuz Growth - TESTE TÉCNICO
 
-Este projeto, para a vaga de estagiário em growth, tem como objetivo automatizar a análise financeira de resultados de Testes A/B para múltiplos parceiros. 
-O pipeline calcula a variante vencedora com foco no **Lucro Real e ROI** gerados para o Méliuz, envia os resultados diretamente para uma planilha na nuvem e gera prompts prontos para relatórios gerenciais por IA.
+Este projeto, para a vaga de estagiário em growth, tem como objetivo automatizar a análise financeira de resultados de Testes A/B para múltiplos parceiros.
 
-Link da planilha:
-https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit?gid=0#gid=0
+O pipeline calcula a variante vencedora com foco no **Lucro Real e ROI** gerados para o Méliuz, envia os resultados diretamente para uma planilha na nuvem e gera prompts prontos para relatórios gerenciais por IA.
 
 ---
 
@@ -13,27 +11,27 @@ https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDq
 Abaixo estão algumas imagens do funcionamento do sistema:
 
 <p align="center">
-  <img src="Imagens/planilha.png" width="800">
-  <br>
-  <em>Legenda 1: Planilha onde os resultados são enviados</em>
+<img src="Imagens/planilha.png" width="800">
+<br>
+<em>Legenda 1: Planilha onde os resultados são enviados</em>
 </p>
 
 <p align="center">
-  <img src="Imagens/dataset1.png" width="800">
-  <br>
-  <em>Legenda 2: Analise do dataset 1 pelo Claude</em>
+<img src="Imagens/dataset1.png" width="800">
+<br>
+<em>Legenda 2: Analise do dataset 1 pelo Claude</em>
 </p>
 
 <p align="center">
-  <img src="Imagens/dataset2.png" width="800">
-  <br>
-  <em>Legenda 3: Analise do dataset 2 pelo Gemini</em>
+<img src="Imagens/dataset2.png" width="800">
+<br>
+<em>Legenda 3: Analise do dataset 2 pelo Gemini</em>
 </p>
 
 <p align="center">
-  <img src="Imagens/dataset3.png" width="800">
-  <br>
-  <em>Legenda 4: Análise do dataset 3 pelo ChatGPT</em>
+<img src="Imagens/dataset3.png" width="800">
+<br>
+<em>Legenda 4: Análise do dataset 3 pelo ChatGPT</em>
 </p>
 
 ---
@@ -52,13 +50,13 @@ Abaixo estão algumas imagens do funcionamento do sistema:
 
 ```text
 📦 Meliuz-Growth-Test
- ┣ 📂 datasets/        # Coloque aqui todos os arquivos .csv exportados dos testes A/B
- ┣ 📂 relatorios/      # Prompts prontos para a Inteligência Artificial
- ┣ 📂 scripts/
- ┃ ┗ 📜 analisador_ab.py  # O script principal 
- ┣ 📜 credentials.json # Não irá aparecer, mas é a chave de acesso para a planilha do Google Sheets
- ┣ 📜 .gitignore       # Protege arquivos sensíveis
- ┗ 📜 README.md
+┣ 📂 datasets/ # Coloque aqui todos os arquivos .csv exportados dos testes A/B
+┣ 📂 relatorios/ # Prompts prontos para a Inteligência Artificial
+┣ 📂 scripts/
+┃ ┗ 📜 analisador_ab.py # O script principal
+┣ 📜 credentials.json #Não irá aparecer, mas é a chave de acesso para a planilha do Google Sheets
+┣ 📜 .gitignore # Protege arquivos sensíveis
+┗ 📜 README.md
 ```
 
 ---
@@ -67,9 +65,6 @@ Abaixo estão algumas imagens do funcionamento do sistema:
 
 ### 1. Pré-requisitos e segurança
 Como este projeto se conecta diretamente a uma planilha na nuvem, as chaves de acesso (`credentials.json`) **não foram enviadas para o GitHub**. Entretanto é possível testar o código rodando na própria máquina.
-
-Mas não se preocupe! **Você não precisa delas para avaliar o código.**
-O script foi construído para funcionar perfeitamente em modo local. Se ele não encontrar o arquivo `credentials.json`, ele avisará que vai pular a etapa da nuvem, mas **continuará rodando a análise A/B inteira** e gerará os relatórios de IA localmente na pasta `relatorios/` para você conferir o resultado da lógica!
 
 ### 2. Ative a máquina virtual
 Os pacotes como `pandas` e `gspread` foram instalados de forma isolada.
