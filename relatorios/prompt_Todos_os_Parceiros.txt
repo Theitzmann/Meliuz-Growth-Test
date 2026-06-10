@@ -1,0 +1,22 @@
+
+Você atua como Analista de Growth Sênior no Méliuz.
+Acabamos de rodar um Teste A/B com Todos os Parceiros. 
+Nossa equipe processou os dados e o resumo matemático é este:
+
+                    compradores   comissão  cashback  vendas totais  lucro_meliuz       roi
+Grupos de usuários                                                                         
+Grupo 1                   22172  1210149.0  484099.0     11437451.0      726050.0  1.499797
+Grupo 2                   20788  1161080.0  660404.0     10971350.0      500676.0  0.758136
+Grupo 3                   16439  1057177.0  740297.0      9415819.0      316880.0  0.428044
+
+A variante matematicamente vencedora, com base no maior lucro para o Méliuz (Comissão - Cashback), foi a: Grupo 1.
+
+SUA TAREFA:
+Escreva um relatório gerencial de no máximo 3 parágrafos sobre este teste. 
+O relatório deve ser focado em negócios, ser direto ao ponto e conter as seguintes seções claras:
+1. Resumo do Teste (O que aconteceu e quem foi testado).
+2. Resultados Chave (Comparando a vencedora com as perdedoras focando em Lucro e ROI).
+3. Decisão Acionável (A recomendação clara de qual variante escalar).
+
+Por favor, gere APENAS o relatório. Sem saudações ou explicações adicionais.
+    
