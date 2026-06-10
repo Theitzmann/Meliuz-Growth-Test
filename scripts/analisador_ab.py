@@ -71,9 +71,11 @@ def registrar_no_google_sheets(nome_parceiro, vencedor, lucro, roi):
         planilha.append_row(linha)
         print("☁️ Resultado registrado no Google Sheets com sucesso!")
         
+    except FileNotFoundError:
+        print("⚠️ 'credentials.json' não encontrado. Salvamento na nuvem ignorado (modo de avaliação local).")
     except Exception as e:
         print(f"❌ Erro ao salvar no Google Sheets: {e}")
-        print("Dica: Verifique se o 'credentials.json' está na pasta raiz e se você compartilhou a planilha com o e-mail correto.")
+        print("Dica: Verifique se o 'credentials.json' está na pasta raiz e se a planilha foi compartilhada.")
 
 # Busca parceiros que já foram salvos na planilha
 def obter_parceiros_processados():
