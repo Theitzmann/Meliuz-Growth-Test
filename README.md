@@ -13,7 +13,7 @@ Solução desenvolvida para o teste técnico da vaga de Estágio em Growth. Este
 2. **📊 Decisão orientada ao ROI:** Agrupa os dados e calcula matematicamente o vencedor do teste focando no **ROI** e eficiência de capital.
 3. **🤖 Integração com IA:** Gera relatório por IA em formato Markdown diretamente na pasta `relatorios/`.
 4. **☁️ Integração com Google Sheets:** Conecta de forma segura com o Google Drive/Sheets e alimenta uma planilha em tempo real.
-5. **⚙️ Funcionamento em outras máquinas:** Mesmo sem as credenciais do Google Sheets e da IA, o código irá funcionar normalmente, salvando o registro em um arquivo `.csv` local e os prompts estruturados em `.txt`.
+5. **⚙️ Funcionamento em outras máquinas:** Mesmo sem as credenciais do Google Sheets e da IA, o código irá funcionar normalmente, salvando o registro em um arquivo `.csv` local e **prompts estruturados** em `.txt` para copiar e colar em uma IA de preferência (ChatGPT, Claude, Gemini...) para gerar o relatório final.
 
 ---
 
@@ -34,7 +34,6 @@ Solução desenvolvida para o teste técnico da vaga de Estágio em Growth. Este
  ┣ 📜 .gitignore
  ┗ 📜 README.md
 ```
-
 ---
 
 ## 📝 Exemplo de Relatório Gerencial (Output da IA)

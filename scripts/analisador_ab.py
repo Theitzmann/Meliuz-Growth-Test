@@ -68,18 +68,16 @@ def gerar_relatorio_claude(prompt_texto, nome_parceiro):
 
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
-        print("⚠️ Chave 'ANTHROPIC_API_KEY' não encontrada.")
-        print("📝 Gerando prompt de texto para ser posto na sua IA de preferência e gerar um relatório...")
+        print("⚠️ Chave da IA não encontrada ")
         
-        # Agora sim ele escreve o arquivo de texto
         caminho_txt = os.path.join(pasta_relatorios, f"prompt_{nome_parceiro}.txt")
         with open(caminho_txt, "w", encoding="utf-8") as arquivo:
             arquivo.write(prompt_texto)
             
-        print(f"✨ Prompt salvo em: relatorios/prompt_{nome_parceiro}.txt")
+        print(f"Gerando prompt para IA em relatorios")
         return False
         
-    print("🤖 Enviando dados para a IA analisar...")
+    print("🤖 Enviando dados para a IA gerar o relatório")
     try:
         client = anthropic.Anthropic(api_key=api_key)
         message = client.messages.create(
@@ -97,7 +95,7 @@ def gerar_relatorio_claude(prompt_texto, nome_parceiro):
         with open(caminho_arquivo, "w", encoding="utf-8") as arquivo:
             arquivo.write(relatorio)
             
-        print(f"✨ Relatório gerencial de IA salvo em: relatorios/relatorio_{nome_parceiro}.md")
+        print(f"Relatório gerencial de IA salvo em: relatorios/relatorio_{nome_parceiro}.md")
         return True
         
     except Exception as e:
@@ -123,7 +121,7 @@ def registrar_resultado(nome_parceiro, vencedor, lucro, roi):
             return 
         
         planilha.append_row(linha)
-        print("☁️ Resultado registrado no Google Sheets com sucesso!")
+        print("☁️ Resultado registrado no Google Sheets com sucesso")
         
     except FileNotFoundError:
         # Salva na pasta relatorios 
@@ -146,7 +144,7 @@ def registrar_resultado(nome_parceiro, vencedor, lucro, roi):
                 writer.writerow(['Data', 'Parceiro', 'Variante Vencedora', 'Lucro Meliuz', 'ROI', 'Decisão'])
             writer.writerow(linha)
             
-        print("⚠️ 'credentials.json' ausente. Resultado salvo localmente em 'relatorios/historico_testes_ab.csv'.")
+        print("⚠️ Chave do Google Sheets não encontrada. Resultado salvo localmente (CSV) em relatorios.")
 
 # 6. Pipeline de Execução
 def main():
