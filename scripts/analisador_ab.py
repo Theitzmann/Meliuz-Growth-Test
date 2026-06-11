@@ -9,7 +9,7 @@ import anthropic
 from dotenv import load_dotenv
 from datetime import datetime
 
-# Carrega as variáveis do arquivo .env (onde estará a sua chave da API)
+# Carrega as variáveis do arquivo
 load_dotenv()
 
 # 1. Carrega o CSV e limpa os dados financeiros
@@ -27,7 +27,7 @@ def carregar_e_limpar_dados(caminho_arquivo):
         )
     return df
 
-# 2. Agrupa os dados e calcula a variante com melhor ROI (Visão de Growth)
+# 2. Agrupa os dados e calcula a variante com melhor ROI 
 def calcular_vencedor_ab(df):
     resumo = df.groupby('Grupos de usuários')[['compradores', 'comissão', 'cashback', 'vendas totais']].sum()
     resumo['lucro_meliuz'] = resumo['comissão'] - resumo['cashback']
@@ -61,18 +61,29 @@ Por favor, gere APENAS o relatório formatado em Markdown. Sem saudações ou ex
     """
     return prompt
 
-# 4. Chama a API do Claude e salva o relatório final
+# 4. Chama a API do Claude ou salva o prompt 
 def gerar_relatorio_claude(prompt_texto, nome_parceiro):
+    pasta_relatorios = os.path.join(os.path.dirname(__file__), "..", "relatorios")
+    os.makedirs(pasta_relatorios, exist_ok=True)
+
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
-        print("⚠️ Chave 'ANTHROPIC_API_KEY' não encontrada no .env. Gerando apenas o prompt em .txt.")
+        print("⚠️ Chave 'ANTHROPIC_API_KEY' não encontrada.")
+        print("📝 Gerando prompt de texto para ser posto na sua IA de preferência e gerar um relatório...")
+        
+        # Agora sim ele escreve o arquivo de texto
+        caminho_txt = os.path.join(pasta_relatorios, f"prompt_{nome_parceiro}.txt")
+        with open(caminho_txt, "w", encoding="utf-8") as arquivo:
+            arquivo.write(prompt_texto)
+            
+        print(f"✨ Prompt salvo em: relatorios/prompt_{nome_parceiro}.txt")
         return False
         
     print("🤖 Enviando dados para a IA analisar...")
     try:
         client = anthropic.Anthropic(api_key=api_key)
         message = client.messages.create(
-            model="claude-haiku-4-5", # Nomenclatura oficial corrigida
+            model="claude-haiku-4-5",
             max_tokens=1000,
             temperature=0.2,
             messages=[
@@ -81,9 +92,6 @@ def gerar_relatorio_claude(prompt_texto, nome_parceiro):
         )
         
         relatorio = message.content[0].text
-        
-        pasta_relatorios = os.path.join(os.path.dirname(__file__), "..", "relatorios")
-        os.makedirs(pasta_relatorios, exist_ok=True)
         
         caminho_arquivo = os.path.join(pasta_relatorios, f"relatorio_{nome_parceiro}.md")
         with open(caminho_arquivo, "w", encoding="utf-8") as arquivo:
@@ -110,27 +118,27 @@ def registrar_resultado(nome_parceiro, vencedor, lucro, roi):
         gc = gspread.service_account(filename=caminho_credenciais)
         planilha = gc.open_by_url('https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit').sheet1
         
-        # --- TRAVA DE DUPLICIDADE SILENCIOSA ---
-        parceiros_cadastrados = planilha.col_values(2) # Assume que Parceiro é a 2ª coluna (B)
+        parceiros_cadastrados = planilha.col_values(2) 
         if nome_parceiro in parceiros_cadastrados:
-            return # Sai da função sem registrar novamente
-        # ---------------------------------------
+            return 
         
         planilha.append_row(linha)
         print("☁️ Resultado registrado no Google Sheets com sucesso!")
         
     except FileNotFoundError:
-        caminho_csv = os.path.join(os.path.dirname(__file__), "..", "historico_testes_ab.csv")
+        # Salva na pasta relatorios 
+        pasta_relatorios = os.path.join(os.path.dirname(__file__), "..", "relatorios")
+        os.makedirs(pasta_relatorios, exist_ok=True)
+        caminho_csv = os.path.join(pasta_relatorios, "historico_testes_ab.csv")
+        
         arquivo_existe = os.path.isfile(caminho_csv)
         
-        # --- TRAVA DE DUPLICIDADE SILENCIOSA NO CSV ---
         if arquivo_existe:
             with open(caminho_csv, mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 parceiros_cadastrados = [row[1] for row in reader if len(row) > 1]
             if nome_parceiro in parceiros_cadastrados:
-                return # Sai da função sem registrar novamente
-        # ----------------------------------------------
+                return 
         
         with open(caminho_csv, mode='a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
@@ -138,7 +146,7 @@ def registrar_resultado(nome_parceiro, vencedor, lucro, roi):
                 writer.writerow(['Data', 'Parceiro', 'Variante Vencedora', 'Lucro Meliuz', 'ROI', 'Decisão'])
             writer.writerow(linha)
             
-        print("⚠️ 'credentials.json' ausente. Resultado salvo localmente em 'historico_testes_ab.csv'.")
+        print("⚠️ 'credentials.json' ausente. Resultado salvo localmente em 'relatorios/historico_testes_ab.csv'.")
 
 # 6. Pipeline de Execução
 def main():
