@@ -1,0 +1,5 @@
+pandas==2.2.0
+gspread==6.0.0
+python-dotenv==1.0.1
+anthropic==0.19.1
+httpx==0.27.2
