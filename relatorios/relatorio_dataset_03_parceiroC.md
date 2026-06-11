@@ -1,10 +1,10 @@
 # Relatório de Teste A/B - Dataset_03_ParceiroC
 
 ## Resumo do Teste
-Realizamos um teste A/B com o parceiro Dataset_03_ParceiroC envolvendo dois grupos de usuários com tamanhos similares (Grupo 1: 4.549 compradores e Grupo 2: 4.522 compradores). O objetivo foi validar qual estratégia de incentivo gera melhor retorno financeiro para o Méliuz, comparando diferentes estruturas de comissão e cashback.
+Realizamos um teste A/B com o parceiro Dataset_03_ParceiroC comparando duas estratégias de incentivo ao cliente. O Grupo 1 (variante de controle) e o Grupo 2 (variante teste) foram expostos a diferentes estruturas de comissão e cashback, com aproximadamente 4.500 usuários em cada grupo. O teste avaliou o impacto direto na rentabilidade do Méliuz através das métricas de lucro e ROI.
 
 ## Resultados Chave
-O Grupo 1 apresentou desempenho significativamente superior, gerando **R$ 34.769 de lucro** com **ROI de 39,99%**, enquanto o Grupo 2 resultou em **lucro zero e ROI de 0%**. Apesar do Grupo 2 ter investido mais em cashback (R$ 117.967 vs R$ 86.924), essa estratégia não se converteu em rentabilidade. O Grupo 1 manteve um equilíbrio mais eficiente entre comissão (R$ 121.693) e cashback, gerando vendas totais ligeiramente superiores (R$ 1.738.460 vs R$ 1.685.235) com melhor margem operacional.
+O Grupo 1 apresentou desempenho significativamente superior, gerando **R$ 34.769 de lucro** contra **R$ 0 do Grupo 2**, representando uma diferença absoluta de R$ 34.769. Em termos de eficiência, o Grupo 1 alcançou um **ROI de 39,99%**, enquanto o Grupo 2 resultou em **ROI de 0%**, indicando que a estratégia do Grupo 2 consumiu toda a margem sem gerar retorno. Apesar do Grupo 2 ter investido mais em cashback (R$ 117.967 vs R$ 86.924), essa estratégia não se converteu em vantagem competitiva, gerando vendas ligeiramente inferiores (R$ 1.685.235 vs R$ 1.738.460).
 
 ## Decisão Acionável
-**Recomenda-se escalar imediatamente a estratégia do Grupo 1** como modelo padrão para este parceiro. A variante vencedora demonstrou capacidade comprovada de gerar lucro sustentável com ROI positivo, enquanto a alternativa testada não apresenta viabilidade financeira. Sugerimos implementar essa estrutura em 100% do volume de usuários e monitorar a performance nos próximos 30 dias para validar a consistência dos resultados.
+**Recomendação: Escalar imediatamente a estratégia do Grupo 1.** A variante vencedora demonstrou maior eficiência na conversão de investimento em comissão/cashback para lucro real. Sugerimos descontinuar a abordagem do Grupo 2 e aplicar os aprendizados do Grupo 1 em futuras campanhas com este parceiro, otimizando a alocação de incentivos para maximizar rentabilidade sem comprometer o volume de vendas.

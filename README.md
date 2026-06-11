@@ -67,3 +67,9 @@ python3 -m venv .venv && source .venv/bin/activate && pip install -r requirement
 .venv/bin/python scripts/analisador_ab.py datasets/NOME_DO_ARQUIVO.csv
 ```
 *(⚠️ ATENÇÃO: Substitua `NOME_DO_ARQUIVO.csv` pelo nome exato do dataset a ser analisado, como por exemplo `dataset_01_parceiroA.csv`).*
+Exemplos:
+```bash
+.venv/bin/python scripts/analisador_ab.py datasets/dataset_01_parceiroA.csv
+.venv/bin/python scripts/analisador_ab.py datasets/dataset_02_parceiroB.csv
+.venv/bin/python scripts/analisador_ab.py datasets/dataset_03_parceiroC.csv
+```

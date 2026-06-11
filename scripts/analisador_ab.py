@@ -114,14 +114,16 @@ def registrar_resultado(nome_parceiro, vencedor, lucro, roi):
     try:
         caminho_credenciais = os.path.join(os.path.dirname(__file__), "..", "credentials.json")
         gc = gspread.service_account(filename=caminho_credenciais)
-        planilha = gc.open_by_url('https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit').sheet1
+        url_planilha = 'https://docs.google.com/spreadsheets/d/1jpXBCWaSC4H3O-kYMTA1MyvZ47Gb987zSOA9wFDqOa8/edit'
+        planilha = gc.open_by_url(url_planilha).sheet1
         
         parceiros_cadastrados = planilha.col_values(2) 
         if nome_parceiro in parceiros_cadastrados:
+            print(f"☁️ Resultado já estava registrado no Google Sheets: {url_planilha}")
             return 
         
         planilha.append_row(linha)
-        print("☁️ Resultado registrado no Google Sheets com sucesso")
+        print(f"☁️ Resultado registrado no Google Sheets com sucesso: {url_planilha}")
         
     except FileNotFoundError:
         # Salva na pasta relatorios 
